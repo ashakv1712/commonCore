@@ -4,319 +4,991 @@
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
 <title>Strive Math · Grade 7 Curriculum</title>
-
-<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
-
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,300&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
 <style>
+/* ─── DESIGN TOKENS ─── */
 :root {
-  --coral:#E8420A;
-  --teal:#00C896;
-  --amber:#F5A623;
-  --blue:#4A8FFF;
-  --purple:#C44DFF;
-  --green:#22C55E;
+  --coral:   #E8420A;
+  --coral2:  #FF6B35;
+  --teal:    #00C896;
+  --teal2:   #00E8A8;
+  --amber:   #F5A623;
+  --amber2:  #FFD166;
+  --blue:    #4A8FFF;
+  --blue2:   #7EB3FF;
+  --purple:  #C44DFF;
+  --purple2: #DE8FFF;
 
-  --bg:#07090F;
-  --surface:#141820;
-  --border:rgba(255,255,255,0.08);
-  --border2:rgba(255,255,255,0.12);
+  /* NEW: warm light gradient bg */
+  --bg-top:    #FFF8F4;
+  --bg-mid:    #F5F0FF;
+  --bg-bot:    #EEF7FF;
+  --surface:   rgba(255,255,255,0.72);
+  --surface2:  rgba(255,255,255,0.88);
+  --surface3:  rgba(255,255,255,0.96);
+  --border:    rgba(0,0,0,0.07);
+  --border2:   rgba(0,0,0,0.13);
+  --border3:   rgba(0,0,0,0.05);
 
-  --text1:#F0F4FF;
-  --text2:#8FA4C8;
-  --text3:#4A6080;
+  --ink:   #1A0A2E;
+  --ink2:  #3D2A50;
+  --ink3:  #7A6A8A;
+  --ink4:  #B0A0C0;
 
-  --display:'Syne',sans-serif;
-  --font:'DM Sans',sans-serif;
-}
+  --font:    'DM Sans', sans-serif;
+  --display: 'Syne', sans-serif;
+  --mono:    'DM Mono', monospace;
 
-body{
-  margin:0;
-  font-family:var(--font);
-  background:var(--bg);
-  color:var(--text1);
-}
-
-/* HERO */
-.hero{
-  text-align:center;
-  padding:60px 20px 40px;
-}
-.hero h1{
-  font-family:var(--display);
-  font-size:64px;
-}
-.hero p{
-  color:var(--text2);
+  --sh-sm: 0 1px 4px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
+  --sh:    0 4px 20px rgba(0,0,0,0.08), 0 1px 6px rgba(0,0,0,0.04);
+  --sh-lg: 0 12px 48px rgba(0,0,0,0.10), 0 4px 14px rgba(0,0,0,0.06);
+  --r: 14px; --r-lg: 22px;
 }
 
-/* TOOLBAR */
-.toolbar{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  padding:16px 24px;
-  border-top:1px solid var(--border);
-  border-bottom:1px solid var(--border);
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: var(--font);
+  background: var(--bg-top);
+  color: var(--ink);
+  min-height: 100vh;
+  overflow-x: hidden;
+  line-height: 1.6;
 }
 
-.domain-pills{
-  display:flex;
-  gap:6px;
-  flex-wrap:wrap;
+/* ─── GRADIENT BACKGROUND ─── */
+.bg-canvas {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background:
+    linear-gradient(160deg, #FFF5EE 0%, #FFF0F8 30%, #F0F0FF 60%, #EAF6FF 100%);
 }
-.dp{
-  font-size:11px;
-  padding:5px 12px;
-  border-radius:100px;
-  border:1px solid var(--border2);
-  color:var(--text3);
-  cursor:pointer;
+/* soft blobs */
+.bg-canvas::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 65% 55% at 0% 0%,   rgba(232,66,10,0.10)  0%, transparent 55%),
+    radial-gradient(ellipse 55% 45% at 100% 5%,  rgba(0,200,150,0.09)  0%, transparent 55%),
+    radial-gradient(ellipse 50% 45% at 100% 90%, rgba(74,143,255,0.09) 0%, transparent 55%),
+    radial-gradient(ellipse 40% 40% at 0% 90%,   rgba(196,77,255,0.08) 0%, transparent 50%),
+    radial-gradient(ellipse 35% 35% at 50% 50%,  rgba(245,166,35,0.06) 0%, transparent 50%);
 }
-.dp.on{
-  background:white;
-  color:black;
-}
-
-/* ROADMAP */
-.roadmap{
-  max-width:900px;
-  margin:40px auto;
-  position:relative;
-  padding-left:60px;
-}
-
-.rm-spine{
-  position:absolute;
-  left:20px;
-  top:0;
-  bottom:0;
-  width:2px;
-  background:linear-gradient(var(--coral),var(--teal),var(--blue),var(--purple));
-  opacity:0.3;
+/* noise grain overlay */
+.bg-canvas::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  opacity: 0.028;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
 }
 
-.rm-item{
-  position:relative;
-  margin-bottom:16px;
+/* dot grid */
+.dot-grid {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background-image: radial-gradient(circle, rgba(100,60,160,0.07) 1px, transparent 1px);
+  background-size: 28px 28px;
 }
 
-.rm-node{
-  position:absolute;
-  left:-52px;
-  top:18px;
-  width:32px;
-  height:32px;
-  border-radius:50%;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  font-weight:800;
-  border:2px solid;
-  background:var(--bg);
+/* ─── FLOATING SYMBOLS ─── */
+.sym-layer {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
 }
+.sym {
+  position: absolute;
+  font-family: var(--display);
+  font-weight: 800;
+  opacity: 0;
+  animation: floatUp linear infinite;
+  user-select: none;
+}
+@keyframes floatUp {
+  0%   { opacity: 0;    transform: translateY(0) rotate(0deg) scale(0.8); }
+  8%   { opacity: 1; }
+  92%  { opacity: 0.5; }
+  100% { opacity: 0;    transform: translateY(-110vh) rotate(25deg) scale(1); }
+}
+
+/* ─── PAGE ─── */
+.page { max-width: 980px; margin: 0 auto; padding: 0 24px 120px; position: relative; z-index: 1; }
+
+/* ─── NAV ─── */
+.nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 28px 0 0;
+}
+.logo { height: 26px; display: block; }
+.nav-right { display: flex; align-items: center; gap: 8px; }
+.nav-pill {
+  font-size: 11px; font-weight: 700; letter-spacing: 0.07em;
+  text-transform: uppercase; border-radius: 100px; padding: 5px 14px;
+  background: var(--surface3); border: 1.5px solid var(--border2);
+  color: var(--ink3); box-shadow: var(--sh-sm);
+}
+.nav-pill-hot {
+  background: linear-gradient(135deg, var(--coral), var(--amber));
+  color: #fff; border-color: transparent;
+  box-shadow: 0 2px 14px rgba(232,66,10,0.3);
+}
+
+/* ─── HERO ─── */
+.hero {
+  padding: 64px 0 52px;
+  text-align: center;
+  position: relative;
+}
+.hero-tag {
+  display: inline-flex; align-items: center; gap: 7px;
+  font-size: 11px; font-weight: 700; letter-spacing: 0.1em;
+  text-transform: uppercase; color: var(--teal);
+  background: rgba(0,200,150,0.1);
+  border: 1.5px solid rgba(0,200,150,0.25);
+  border-radius: 100px; padding: 5px 16px; margin-bottom: 24px;
+}
+.hero-tag-dot {
+  width: 6px; height: 6px; border-radius: 50%;
+  background: var(--teal);
+  animation: pulse 2s ease-in-out infinite;
+}
+@keyframes pulse { 0%,100%{opacity:1;transform:scale(1);} 50%{opacity:0.4;transform:scale(1.6);} }
+
+.hero-h1 {
+  font-family: var(--display);
+  font-size: clamp(44px, 7vw, 72px);
+  font-weight: 800;
+  line-height: 1.0;
+  letter-spacing: -0.03em;
+  margin-bottom: 20px;
+}
+.h1-line1 { color: var(--ink); display: block; }
+.h1-line2 {
+  display: block;
+  background: linear-gradient(135deg, var(--coral) 0%, var(--amber) 40%, var(--teal) 80%, var(--blue) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.hero-sub {
+  font-size: 16px; color: var(--ink3);
+  max-width: 500px; margin: 0 auto 40px;
+  line-height: 1.7; font-weight: 400;
+}
+
+/* stat pills row */
+.hero-pills {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.h-stat {
+  display: flex; align-items: center; gap: 8px;
+  background: var(--surface3);
+  border: 1.5px solid var(--border);
+  border-radius: 100px;
+  padding: 8px 18px;
+  box-shadow: var(--sh-sm);
+}
+.h-stat-num {
+  font-family: var(--display);
+  font-size: 20px; font-weight: 800; line-height: 1;
+}
+.h-stat-lbl {
+  font-size: 11px; font-weight: 600;
+  letter-spacing: 0.05em; text-transform: uppercase;
+  color: var(--ink3);
+}
+
+/* ─── DOMAIN FILTER STRIP ─── */
+.filter-strip {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 18px 0 20px;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.filter-strip::-webkit-scrollbar { display: none; }
+.fs-btn {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 7px 16px; border-radius: 100px;
+  border: 1.5px solid var(--border2);
+  background: var(--surface3);
+  color: var(--ink3);
+  font-family: var(--font); font-size: 12px; font-weight: 600;
+  cursor: pointer; white-space: nowrap;
+  box-shadow: var(--sh-sm);
+  transition: all 0.18s ease;
+  letter-spacing: 0.01em;
+}
+.fs-btn:hover { transform: translateY(-1px); box-shadow: var(--sh); color: var(--ink); }
+.fs-btn.on  { color: #fff; border-color: transparent; box-shadow: 0 4px 16px rgba(0,0,0,0.18); transform: translateY(-1px); }
+.fs-dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; transition: transform 0.18s; }
+.fs-btn:hover .fs-dot, .fs-btn.on .fs-dot { transform: scale(1.3); }
+.fs-count { font-size: 10px; font-weight: 700; padding: 1px 6px; border-radius: 5px; background: rgba(0,0,0,0.08); }
+
+/* ─── ROADMAP ─── */
+.roadmap {
+  position: relative;
+  padding-left: 72px;
+}
+
+/* vertical gradient spine */
+.rm-spine {
+  position: absolute;
+  left: 26px;
+  top: 30px;
+  bottom: 30px;
+  width: 3px;
+  border-radius: 2px;
+  background: linear-gradient(
+    180deg,
+    var(--coral)  0%,
+    var(--amber)  25%,
+    var(--teal)   50%,
+    var(--blue)   75%,
+    var(--purple) 100%
+  );
+  opacity: 0.35;
+}
+
+/* connecting lines from node to spine */
+.rm-item { position: relative; margin-bottom: 18px; }
+.rm-item::before {
+  content: '';
+  position: absolute;
+  left: -47px;
+  top: 27px;
+  width: 44px;
+  height: 1.5px;
+  background: var(--border2);
+}
+
+/* NODE */
+.rm-node {
+  position: absolute;
+  left: -60px;
+  top: 15px;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--display);
+  font-size: 13px; font-weight: 800;
+  border: 2.5px solid;
+  /* "cutout" from bg so spine shows behind cleanly */
+  box-shadow: 0 0 0 5px var(--bg-top), 0 2px 12px rgba(0,0,0,0.12);
+  z-index: 2;
+  transition: transform 0.22s cubic-bezier(0.34,1.56,0.64,1);
+  cursor: pointer;
+}
+.rm-item:hover .rm-node { transform: scale(1.18) rotate(-5deg); }
 
 /* CARD */
-.rm-card{
-  background:var(--surface);
-  border:1px solid var(--border);
-  border-radius:16px;
-  overflow:hidden;
+.rm-card {
+  background: var(--surface3);
+  border: 1.5px solid var(--border);
+  border-radius: var(--r-lg);
+  box-shadow: var(--sh);
+  overflow: hidden;
+  transition: box-shadow 0.22s, border-color 0.22s, transform 0.22s;
+}
+.rm-card:hover { box-shadow: var(--sh-lg); border-color: var(--border2); }
+.rm-card.open  { box-shadow: var(--sh-lg); border-color: var(--border2); }
+
+/* card top stripe */
+.rm-card-stripe {
+  height: 3px;
+  width: 100%;
 }
 
-.rm-card-hdr{
-  padding:16px 20px;
-  display:flex;
-  justify-content:space-between;
-  cursor:pointer;
+/* card header */
+.rm-card-hdr {
+  display: flex; align-items: center; gap: 14px;
+  padding: 18px 22px;
+  cursor: pointer; user-select: none;
+  transition: background 0.15s;
+}
+.rm-card-hdr:hover { background: rgba(0,0,0,0.015); }
+
+.rm-card-icon {
+  width: 42px; height: 42px;
+  border-radius: 13px;
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--display); font-size: 16px; font-weight: 800;
+  flex-shrink: 0;
+}
+.rm-card-info { flex: 1; min-width: 0; }
+.rm-card-name {
+  font-family: var(--display);
+  font-size: 15px; font-weight: 700; color: var(--ink);
+  margin-bottom: 2px; letter-spacing: -0.01em;
+}
+.rm-card-desc { font-size: 11.5px; color: var(--ink3); }
+
+.rm-card-right { display: flex; align-items: center; gap: 9px; flex-shrink: 0; }
+.rm-code {
+  font-family: var(--mono); font-size: 10px; font-weight: 500;
+  padding: 3px 10px; border-radius: 7px; border: 1.5px solid;
+  letter-spacing: 0.04em;
+}
+.rm-ct {
+  font-size: 11px; color: var(--ink3);
+  background: rgba(0,0,0,0.05);
+  border: 1.5px solid var(--border);
+  border-radius: 7px; padding: 3px 10px; font-weight: 600;
+}
+.chev {
+  width: 28px; height: 28px; border-radius: 9px;
+  background: rgba(0,0,0,0.05);
+  border: 1.5px solid var(--border);
+  display: flex; align-items: center; justify-content: center;
+  transition: all 0.25s cubic-bezier(0.4,0,0.2,1);
+}
+.rm-card.open .chev { background: var(--ink); border-color: var(--ink); }
+.chev svg { transition: transform 0.28s cubic-bezier(0.4,0,0.2,1); color: var(--ink3); }
+.rm-card.open .chev svg { transform: rotate(180deg); color: #fff; }
+
+/* ─── OUTCOMES PILLS AREA ─── */
+.rm-pills-wrap {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.5s cubic-bezier(0.4,0,0.2,1);
+}
+.rm-pills-inner {
+  padding: 0 22px 18px;
+  border-top: 1.5px solid var(--border);
+}
+.rm-pills-label {
+  font-size: 9px; font-weight: 700; letter-spacing: 0.1em;
+  text-transform: uppercase; color: var(--ink4);
+  padding: 12px 0 8px;
+}
+.rm-pills-row {
+  display: flex; flex-wrap: wrap; gap: 6px;
+}
+.rm-pill {
+  font-size: 11.5px; font-weight: 600;
+  padding: 6px 14px; border-radius: 100px;
+  border: 1.5px solid;
+  cursor: pointer; white-space: nowrap;
+  transition: all 0.18s ease;
+  letter-spacing: 0.01em;
+  opacity: 0; transform: translateY(6px);
+  animation: none;
+}
+.rm-pill.revealed {
+  opacity: 1; transform: translateY(0);
+  transition: opacity 0.25s ease, transform 0.25s ease, background 0.18s, color 0.18s, box-shadow 0.18s;
+}
+.rm-pill:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.15); }
+.rm-pill.sel   { color: #fff !important; border-color: transparent !important; box-shadow: 0 4px 14px rgba(0,0,0,0.2); }
+
+/* ─── DETAIL PANEL ─── */
+.rm-detail {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.42s cubic-bezier(0.4,0,0.2,1);
+}
+.rm-det-in {
+  padding: 18px 22px 22px;
+  border-top: 1.5px solid var(--border);
 }
 
-.rm-card-name{
-  font-family:var(--display);
-  font-weight:700;
+/* breadcrumb */
+.rm-breadcrumb {
+  display: flex; align-items: center; gap: 6px;
+  font-size: 10px; font-weight: 700; letter-spacing: 0.08em;
+  text-transform: uppercase; color: var(--ink4); margin-bottom: 10px;
+}
+.rm-breadcrumb-sep { opacity: 0.4; }
+
+.rm-det-title {
+  font-family: var(--display);
+  font-size: 16px; font-weight: 700; color: var(--ink);
+  margin-bottom: 8px; letter-spacing: -0.01em;
+}
+.rm-det-desc {
+  font-size: 13px; color: var(--ink2);
+  line-height: 1.7; margin-bottom: 16px;
+  max-width: 680px;
 }
 
-.rm-card-desc{
-  font-size:12px;
-  color:var(--text3);
+/* two-col layout for topics + skills */
+.rm-det-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+@media(max-width:640px){ .rm-det-cols { grid-template-columns: 1fr; } }
+
+.rm-det-col-label {
+  font-size: 9px; font-weight: 800; letter-spacing: 0.1em;
+  text-transform: uppercase; color: var(--ink4); margin-bottom: 8px;
+}
+.topic-chips { display: flex; flex-wrap: wrap; gap: 5px; }
+.topic-chip {
+  font-size: 11.5px; font-weight: 600;
+  padding: 4px 12px; border-radius: 100px; border: 1.5px solid;
+  transition: transform 0.15s;
+}
+.topic-chip:hover { transform: translateY(-1px); }
+
+.skills-list { display: flex; flex-direction: column; gap: 5px; }
+.skill-row {
+  display: flex; align-items: flex-start; gap: 8px;
+  background: rgba(0,0,0,0.03);
+  border: 1.5px solid var(--border);
+  border-radius: 9px; padding: 7px 11px;
+  font-size: 12px; color: var(--ink2); line-height: 1.45;
+  transition: background 0.15s, border-color 0.15s;
+}
+.skill-row:hover { background: rgba(0,0,0,0.05); border-color: var(--border2); }
+.skill-bullet {
+  width: 5px; height: 5px; border-radius: 50%;
+  flex-shrink: 0; margin-top: 5px;
 }
 
-.rm-pills-row{
-  display:none;
-  padding:10px 20px;
-  flex-wrap:wrap;
-  gap:6px;
+/* ─── FOOTER ─── */
+.footer {
+  margin-top: 60px;
+  padding-top: 20px;
+  border-top: 1.5px solid var(--border);
+  display: flex; align-items: center; justify-content: space-between;
+  flex-wrap: wrap; gap: 12px;
+}
+.foot-l { font-size: 12px; color: var(--ink4); font-weight: 500; }
+.foot-codes { display: flex; gap: 5px; flex-wrap: wrap; }
+.foot-code {
+  font-family: var(--mono); font-size: 10px; font-weight: 500;
+  padding: 3px 8px; border-radius: 6px; letter-spacing: 0.04em;
 }
 
-.rm-pill{
-  font-size:11px;
-  padding:4px 10px;
-  border-radius:100px;
-  border:1px solid;
-  cursor:pointer;
-}
+/* ─── ANIMATIONS ─── */
+@keyframes fadeUp { from{opacity:0;transform:translateY(20px);} to{opacity:1;transform:translateY(0);} }
+.hero    { animation: fadeUp 0.55s ease both 0.06s; }
+.filter-strip { animation: fadeUp 0.45s ease both 0.16s; }
+.rm-item { animation: fadeUp 0.4s ease both; }
+.rm-item:nth-child(2) { animation-delay:0.10s; }
+.rm-item:nth-child(3) { animation-delay:0.15s; }
+.rm-item:nth-child(4) { animation-delay:0.20s; }
+.rm-item:nth-child(5) { animation-delay:0.25s; }
+.rm-item:nth-child(6) { animation-delay:0.30s; }
 
-.rm-pill.sel{
-  color:white;
-}
-
-.rm-detail{
-  max-height:0;
-  overflow:hidden;
-  transition:0.3s;
-}
-
-.rm-det-in{
-  padding:14px 20px;
-  border-top:1px solid var(--border);
-}
-
-.rm-sk{
-  font-size:11px;
-  background:#111;
-  padding:4px 8px;
-  border-radius:6px;
-  margin:2px;
-  display:inline-block;
-}
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 3px; }
 </style>
 </head>
-
 <body>
 
-<div class="hero">
-  <h1>Grade 7</h1>
-  <p>Learning Roadmap · Common Core</p>
-</div>
+<!-- BG LAYERS -->
+<div class="bg-canvas"></div>
+<div class="dot-grid"></div>
+<div class="sym-layer" id="symLayer"></div>
 
-<div class="toolbar">
-  <div>Explore learning progression</div>
-  <div class="domain-pills" id="dpRow"></div>
-</div>
+<div class="page">
 
-<div class="roadmap" id="rmWrap">
-  <div class="rm-spine"></div>
-</div>
+  <!-- NAV -->
+  <nav class="nav">
+    <img class="logo" src="data:image/png;base64,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" alt="Strive Math"/>
+    <div class="nav-right">
+      <span class="nav-pill">Grade 7</span>
+      <span class="nav-pill nav-pill-hot">Common Core</span>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-tag"><span class="hero-tag-dot"></span>Mathematics Curriculum</div>
+    <h1 class="hero-h1">
+      <span class="h1-line1">Grade 7</span>
+      <span class="h1-line2">Learning Outcomes</span>
+    </h1>
+    <p class="hero-sub">Every standard your child masters this year — tap any outcome to expand topics and sub-skills.</p>
+    <div class="hero-pills">
+      <div class="h-stat"><span class="h-stat-num" style="color:var(--coral)">5</span><span class="h-stat-lbl">Domains</span></div>
+      <div class="h-stat"><span class="h-stat-num" style="color:var(--teal)">36</span><span class="h-stat-lbl">Outcomes</span></div>
+      <div class="h-stat"><span class="h-stat-num" style="color:var(--blue)">130+</span><span class="h-stat-lbl">Sub-skills</span></div>
+    </div>
+  </section>
+
+  <!-- FILTER STRIP -->
+  <div class="filter-strip" id="filterStrip"></div>
+
+  <!-- ROADMAP -->
+  <div class="roadmap" id="roadmap">
+    <div class="rm-spine"></div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <span class="foot-l">Strive Math · Grade 7 Common Core State Standards</span>
+    <div class="foot-codes" id="footCodes"></div>
+  </footer>
+
+</div><!-- /page -->
 
 <script>
-
-/* DATA */
+/* ══════════════════════════════════
+   GRADE 7 CCSS DATA
+══════════════════════════════════ */
 const DS = [
-{
-id:'RP',name:'Ratios & Proportions',c:'#E8420A',
-outcomes:[
-{t:'Unit rates',skills:['Find unit rate','Compare rates']},
-{t:'Percent problems',skills:['Discount','Tax','Interest']}
-]
-},
-{
-id:'NS',name:'Number System',c:'#00C896',
-outcomes:[
-{t:'Add/subtract integers',skills:['Rules','Number line']},
-{t:'Multiply/divide',skills:['Sign rules']}
-]
-},
-{
-id:'EE',name:'Expressions & Equations',c:'#F5A623',
-outcomes:[
-{t:'Solve equations',skills:['Two-step','Word problems']}
-]
-}
+  {
+    id:'RP', code:'7.RP', icon:'∶',
+    name:'Ratios & Proportional Relationships',
+    desc:'Unit rates, proportionality, percent problems',
+    c:'#E8420A', cl:'rgba(232,66,10,0.10)', cb:'rgba(232,66,10,0.25)',
+    cStripe:'linear-gradient(90deg,#E8420A,#FF9A5C)',
+    outcomes:[
+      { t:'Compute unit rates with fractions',
+        d:'Compute unit rates associated with ratios of fractions, including complex fractions, in real-world contexts such as speed, price, and density.',
+        tags:['Unit rate','Complex fractions','Real-world ratios','Speed & density'],
+        skills:['Find unit rate from a ratio of fractions','Compute miles per hour with fractional values','Find price per unit with fractional quantities','Solve density problems with fractions','Compare unit rates to determine best value'] },
+      { t:'Decide if two quantities are proportional',
+        d:'Decide whether two quantities are in a proportional relationship by testing for equivalent ratios in a table and by graphing on a coordinate plane.',
+        tags:['Proportional relationship','Equivalent ratios','Graph test','Table test'],
+        skills:['Test for equivalent ratios in a table','Check proportionality by graphing','Identify proportional vs non-proportional tables','Identify proportional vs non-proportional graphs','Explain why a relationship is or is not proportional'] },
+      { t:'Identify the constant of proportionality',
+        d:'Identify the constant of proportionality (unit rate) in tables, graphs, equations, diagrams, and verbal descriptions of proportional relationships.',
+        tags:['Constant of proportionality','Unit rate','Multiple representations','y = kx'],
+        skills:['Find k from a table','Find k from a graph (slope)','Find k from an equation y=kx','Find k from a diagram','Find k from a verbal description','Explain the meaning of points (x,y) including (1,r)'] },
+      { t:'Represent proportional relationships by equations',
+        d:'Represent proportional relationships by equations of the form y=kx; explain what a point (x,y) means in context.',
+        tags:['Equation y=kx','Represent relationships','Interpret points','Write equations'],
+        skills:['Write y=kx from a table','Write y=kx from a graph','Write y=kx from a word problem','Interpret (0,0) in context','Interpret (1,k) in context','Predict values using y=kx'] },
+      { t:'Solve multi-step ratio and percent problems',
+        d:'Use proportional relationships to solve multistep ratio and percent problems involving simple interest, tax, markups, discounts, gratuities, commissions, percent increase/decrease, and percent error.',
+        tags:['Percent','Simple interest','Tax','Discount','Percent change','Markup'],
+        skills:['Calculate simple interest (I=Prt)','Calculate sales tax','Calculate tip and gratuity','Calculate commission','Find percent increase','Find percent decrease','Calculate percent error','Find original price after discount','Find selling price after markup','Solve multi-step percent problems'] },
+    ]
+  },
+  {
+    id:'NS', code:'7.NS', icon:'±',
+    name:'The Number System',
+    desc:'Operations with rational numbers, absolute value, number line',
+    c:'#00A87A', cl:'rgba(0,168,122,0.10)', cb:'rgba(0,168,122,0.25)',
+    cStripe:'linear-gradient(90deg,#00A87A,#00E8A8)',
+    outcomes:[
+      { t:'Add and subtract rational numbers',
+        d:'Apply and extend previous understanding of addition and subtraction to add and subtract rational numbers — integers, fractions, and decimals — using a number line model.',
+        tags:['Adding integers','Subtracting integers','Fractions','Decimals','Number line'],
+        skills:['Add two positive integers','Add two negative integers','Add integers with different signs','Subtract integers using p−q=p+(−q)','Add fractions (positive and negative)','Subtract fractions (positive and negative)','Add and subtract decimals (positive and negative)','Solve real-world problems (temperature, elevation, finance)'] },
+      { t:'Multiply and divide rational numbers',
+        d:'Apply rules for multiplying and dividing rational numbers; understand that the product of two negatives is positive; convert any rational number to a decimal.',
+        tags:['Multiply integers','Divide integers','Sign rules','Rational to decimal'],
+        skills:['Multiply two integers: same sign','Multiply two integers: different signs','Divide integers: same sign','Divide integers: different signs','Multiply fractions (positive and negative)','Divide fractions (positive and negative)','Multiply and divide decimals (positive and negative)','Convert any fraction to a repeating or terminating decimal'] },
+      { t:'Solve real-world problems with rational numbers',
+        d:'Solve real-world and mathematical problems involving the four operations with rational numbers, interpreting answers in the context given.',
+        tags:['Real-world','Four operations','Multi-step','Interpret results'],
+        skills:['Multi-step problems with integers','Multi-step problems with fractions','Multi-step problems with decimals','Mixed rational number problems','Interpret negative results in context','Write and evaluate expressions for real-world situations'] },
+      { t:'Properties of operations with rational numbers',
+        d:'Understand and apply properties — commutative, associative, distributive, identity, inverse — to add, subtract, multiply, and divide rational numbers efficiently.',
+        tags:['Commutative','Associative','Distributive','Identity','Inverse'],
+        skills:['Apply commutative property','Apply associative property','Apply distributive property with negatives','Use additive inverse to simplify','Use multiplicative inverse to simplify','Apply properties to justify steps in a solution'] },
+    ]
+  },
+  {
+    id:'EE', code:'7.EE', icon:'x',
+    name:'Expressions & Equations',
+    desc:'Equivalent expressions, linear equations, inequalities',
+    c:'#D4880A', cl:'rgba(212,136,10,0.10)', cb:'rgba(212,136,10,0.25)',
+    cStripe:'linear-gradient(90deg,#D4880A,#FFD166)',
+    outcomes:[
+      { t:'Apply properties to rewrite expressions',
+        d:'Apply properties of operations as strategies to add, subtract, factor, and expand linear expressions with rational coefficients.',
+        tags:['Expand','Factor','Like terms','Rational coefficients'],
+        skills:['Combine like terms with rational coefficients','Expand using the distributive property','Factor out a common factor','Simplify multi-step expressions','Add and subtract linear expressions','Write equivalent expressions from context'] },
+      { t:'Understand equivalent expressions',
+        d:'Understand that rewriting an expression in different forms can shed light on a problem and how the quantities in it are related — e.g. a+0.05a = 1.05a.',
+        tags:['Equivalence','Interpret expressions','Meaningful forms','Substitution check'],
+        skills:['Recognise equivalent forms of an expression','Explain what a simplified form reveals','Write a+0.05a=1.05a and explain','Interpret the parts of an expression','Compare two forms of the same expression','Check equivalence by substitution'] },
+      { t:'Solve multi-step real-life problems using equations',
+        d:'Solve multi-step real-life and mathematical problems posed with positive and negative rational numbers; estimate answers and assess reasonableness.',
+        tags:['Multi-step equations','Positive and negative rationals','Real-world','Reasonableness'],
+        skills:['Solve two-step equations with integers','Solve two-step equations with rational numbers','Write an equation from a word problem','Estimate the answer before solving','Assess reasonableness of answer','Solve problems involving consecutive integers'] },
+      { t:'Use variables to represent and solve problems',
+        d:'Use variables to represent quantities; construct simple equations and inequalities to solve problems and interpret solutions in context.',
+        tags:['Define a variable','Construct equations','Inequalities','Interpret solutions'],
+        skills:['Define a variable to represent an unknown','Write an equation from a scenario','Write an inequality from a scenario','Solve the equation or inequality','Interpret the solution in context','Check the solution makes sense'] },
+      { t:'Solve equations of the form px+q=r and p(x+q)=r',
+        d:'Solve word problems leading to equations of the form px+q=r and p(x+q)=r, where p, q, and r are rational numbers.',
+        tags:['px+q=r','p(x+q)=r','Two-step equations','Word problems'],
+        skills:['Solve px+q=r (integer coefficients)','Solve px+q=r (rational coefficients)','Solve p(x+q)=r','Translate word problem to px+q=r','Translate word problem to p(x+q)=r','Verify solution by substitution'] },
+      { t:'Solve inequalities and graph solution sets',
+        d:'Solve word problems leading to inequalities of the form px+q>r or px+q<r; graph the solution set on a number line and interpret in context.',
+        tags:['Linear inequalities','Graph solution set','Number line','Interpret in context'],
+        skills:['Solve px+q > r','Solve px+q < r','Solve px+q ≥ r and ≤ r','Graph solution on a number line','Use open vs closed circle correctly','Write and solve an inequality from a word problem','Interpret what the solution set means'] },
+    ]
+  },
+  {
+    id:'G', code:'7.G', icon:'△',
+    name:'Geometry',
+    desc:'Scale drawing, plane figures, circles, angles, surface area, volume',
+    c:'#2070E8', cl:'rgba(32,112,232,0.10)', cb:'rgba(32,112,232,0.25)',
+    cStripe:'linear-gradient(90deg,#2070E8,#7EB3FF)',
+    outcomes:[
+      { t:'Solve problems with scale drawings',
+        d:'Solve problems involving scale drawings of geometric figures — compute actual lengths and areas from a scale, and reproduce a drawing at a different scale.',
+        tags:['Scale drawing','Scale factor','Actual measurements','Maps'],
+        skills:['Find actual length from scale drawing','Find drawing length from actual length','Find scale factor between two drawings','Find area from a scale drawing','Reproduce a figure at a different scale','Apply scale drawings to maps and blueprints'] },
+      { t:'Draw geometric shapes with given conditions',
+        d:'Draw triangles and other geometric shapes with given conditions; identify whether exactly one, more than one, or no triangle can be formed.',
+        tags:['Triangle conditions','Unique triangle','Ambiguous case','Construction'],
+        skills:['Draw triangle given 3 side lengths','Draw triangle given 2 sides and included angle','Draw triangle given 2 angles and included side','Identify unique triangle cases','Identify impossible triangle cases','Identify ambiguous (more than one) cases'] },
+      { t:'Describe cross-sections of 3D figures',
+        d:'Describe the two-dimensional shapes that result from slicing three-dimensional figures such as prisms, pyramids, cylinders, and cones.',
+        tags:['Cross-section','3D solids','Slicing','2D shapes'],
+        skills:['Identify cross-section of a rectangular prism (horizontal)','Identify cross-section of a rectangular prism (vertical)','Identify cross-section of a pyramid','Identify cross-section of a cylinder','Identify cross-section of a cone','Sketch the cross-section from a description'] },
+      { t:'Circumference and area of circles',
+        d:'Know the formulas for the area and circumference of a circle; use them to solve problems; give an informal derivation of the area formula.',
+        tags:['Circumference C=2πr','Area A=πr²','π','Radius & diameter'],
+        skills:['Find circumference given radius','Find circumference given diameter','Find area given radius','Find area given diameter','Find radius given circumference','Find radius given area','Solve real-world circle problems','Informal derivation using sectors'] },
+      { t:'Solve problems using angle relationships',
+        d:'Use facts about supplementary, complementary, vertical, and adjacent angles to write and solve multi-step equations for unknown angles.',
+        tags:['Supplementary','Complementary','Vertical angles','Adjacent angles','Equations'],
+        skills:['Identify supplementary angle pairs','Identify complementary angle pairs','Identify vertical angles','Find unknown angle — supplementary','Find unknown angle — complementary','Find unknown angle — vertical','Multi-step angle problems','Write and solve equations for unknown angles'] },
+      { t:'Area of composite 2D figures',
+        d:'Solve real-world and mathematical problems involving area and perimeter of two-dimensional figures composed of triangles, quadrilaterals, and other polygons.',
+        tags:['Composite figures','Area','Perimeter','Decompose shapes'],
+        skills:['Decompose a composite figure','Find area of composite figure','Find area of shaded regions','Find perimeter of composite figure','Real-world composite area problems','Area of irregular polygons by decomposing'] },
+      { t:'Surface area using nets',
+        d:'Solve real-world and mathematical problems involving surface area of three-dimensional figures composed of triangles, quadrilaterals, and polygons, using nets.',
+        tags:['Surface area','Nets','Rectangular prism','Triangular prism'],
+        skills:['Draw and use a net for a rectangular prism','Draw and use a net for a triangular prism','Find surface area from a net','Find surface area of rectangular prism','Find surface area of triangular prism','Apply surface area to packaging problems'] },
+      { t:'Volume of prisms and pyramids',
+        d:'Solve real-world and mathematical problems involving volume of three-dimensional figures including prisms; extend to pyramids and compare.',
+        tags:['Volume','Prisms','Pyramids','V=Bh'],
+        skills:['Find volume of rectangular prism V=lwh','Find volume of triangular prism','Find volume of prism with composite base','Find volume of rectangular pyramid','Compare volume of prism and pyramid with same base','Apply volume to real-world contexts'] },
+    ]
+  },
+  {
+    id:'SP', code:'7.SP', icon:'∑',
+    name:'Statistics & Probability',
+    desc:'Sampling, comparing populations, probability, simulations',
+    c:'#A020C8', cl:'rgba(160,32,200,0.10)', cb:'rgba(160,32,200,0.25)',
+    cStripe:'linear-gradient(90deg,#A020C8,#DE8FFF)',
+    outcomes:[
+      { t:'Understand statistical sampling',
+        d:'Understand that statistics can be used to gain information about a population by examining a sample; random sampling gives representative and fair results.',
+        tags:['Population','Sample','Random sampling','Bias'],
+        skills:['Distinguish population from sample','Identify random vs non-random samples','Identify biased sampling methods','Explain why random sampling is fair','Determine if a sample is representative','Critique a sampling method'] },
+      { t:'Draw inferences from random samples',
+        d:'Use data from a random sample to draw inferences about a population; generate multiple samples and observe variation in estimates.',
+        tags:['Inference','Sample proportion','Sampling variability','Predict population'],
+        skills:['Use sample proportion to estimate population','Predict population total from a sample','Generate multiple samples and compare','Understand sampling variability','Use mean or median to estimate population','Identify reasonable vs unreasonable inferences'] },
+      { t:'Compare two populations informally',
+        d:'Informally assess the degree of visual overlap of two numerical data distributions; use measures of centre and variability (MAD and IQR) to compare populations.',
+        tags:['Compare distributions','Mean','Median','MAD','IQR','Box plots'],
+        skills:['Compare centres (means or medians)','Compare variability (MAD or IQR)','Calculate mean absolute deviation (MAD)','Interpret overlap in dot plots','Interpret side-by-side box plots','Draw informal conclusions from comparison','Express differences in units of variability'] },
+      { t:'Understand probability fundamentals',
+        d:'Understand that probability is a number between 0 and 1 expressing likelihood; interpret probability as long-run relative frequency.',
+        tags:['Probability scale 0–1','Likelihood language','Theoretical probability','Complementary events'],
+        skills:['Place events on a 0–1 probability scale','Use likelihood language (impossible → certain)','Calculate theoretical probability P(E)','Collect data and compute relative frequency','Compare experimental and theoretical probability','Identify complementary events'] },
+      { t:'Approximate probability through experiments',
+        d:'Approximate the probability of a chance event by collecting data on the process that produces it; observe convergence to theoretical probability over many trials.',
+        tags:['Experiment','Relative frequency','Long-run','Simulation','Convergence'],
+        skills:['Design and conduct a probability experiment','Record and organise trial data','Calculate relative frequency after each trial','Observe convergence to theoretical probability','Explain variation between experiments','Use technology to simulate many trials'] },
+      { t:'Develop probability models',
+        d:'Develop probability models (uniform and non-uniform) and use them to find probabilities of events; compare model predictions to observed frequencies.',
+        tags:['Uniform model','Non-uniform model','Sample space','Observed vs expected'],
+        skills:['Assign probabilities using a uniform model','Assign probabilities using a non-uniform model','Determine if a model is good by comparing observed/expected','List outcomes of a sample space','Find probability of a simple event','Find probability of the complement'] },
+      { t:'Find probabilities of compound events',
+        d:'Find probabilities of compound events using organised lists, tables, tree diagrams, and simulation.',
+        tags:['Compound events','Tree diagram','Sample space table','Simulation'],
+        skills:['List outcomes of a compound event','Use a tree diagram for compound events','Use a sample space table','Find probability from a tree diagram','Find probability from a table','Design a simulation for a compound event','Interpret simulation results'] },
+      { t:'Probability of compound events — fractions of outcomes',
+        d:'Understand that the probability of a compound event is the fraction of outcomes in the sample space for which it occurs; apply to independent events.',
+        tags:['Sample space fractions','P(A and B)','P(A or B)','Independent events'],
+        skills:['List complete sample space for a compound event','Find P(A and B)','Find P(A or B) for mutually exclusive events','Find P(A or B) for non-mutually exclusive events','Apply P(A and B)=P(A)×P(B) for independent events','Apply to games and simulations'] },
+    ]
+  },
 ];
 
-/* FILTERS */
-function buildFilters(){
-  const row=document.getElementById('dpRow');
+let openCards = {};   // domain id → bool
+let selPill   = {};   // domain id → outcome index | null
 
-  const all=document.createElement('div');
-  all.className='dp on';
-  all.innerText='All';
-  all.onclick=()=>setFilter('all');
-  row.appendChild(all);
+/* ── FLOATING SYMBOLS ── */
+const SYMS = ['∫','∑','π','√','∞','Δ','θ','λ','α','β','γ','φ','ε','±','÷','×','∝','∈','≠','≤'];
+const COLS  = ['#E8420A','#00C896','#F5A623','#4A8FFF','#C44DFF'];
+function launchSymbols(){
+  const layer = document.getElementById('symLayer');
+  function add(){
+    const el = document.createElement('div');
+    el.className = 'sym';
+    el.textContent = SYMS[Math.floor(Math.random()*SYMS.length)];
+    const sz = Math.random()*20+10;
+    el.style.cssText = `
+      left:${Math.random()*100}%;
+      bottom:-50px;
+      font-size:${sz}px;
+      color:${COLS[Math.floor(Math.random()*COLS.length)]};
+      opacity:0;
+      animation-duration:${Math.random()*18+10}s;
+      animation-delay:${Math.random()*4}s;
+    `;
+    layer.appendChild(el);
+    setTimeout(()=>el.remove(), 26000);
+  }
+  for(let i=0;i<16;i++) setTimeout(add, i*700);
+  setInterval(add, 1400);
+}
+launchSymbols();
+
+/* ── BUILD FILTER STRIP ── */
+function buildFilters(){
+  const strip = document.getElementById('filterStrip');
+
+  const allBtn = mkBtn('all','All Domains',null,true);
+  strip.appendChild(allBtn);
 
   DS.forEach(d=>{
-    const b=document.createElement('div');
-    b.className='dp';
-    b.innerText=d.id;
-    b.onclick=()=>setFilter(d.id);
-    row.appendChild(b);
+    strip.appendChild(mkBtn(d.id, d.id+' · '+d.name, d, false));
   });
 }
-
-function setFilter(id){
-  document.querySelectorAll('.dp').forEach(b=>b.classList.remove('on'));
-  event.target.classList.add('on');
-
+function mkBtn(id, label, d, on){
+  const b = document.createElement('button');
+  b.className = 'fs-btn' + (on?' on':'');
+  b.dataset.fid = id;
+  if(d) b.innerHTML = `<span class="fs-dot" style="background:${d.c}"></span>${d.name}<span class="fs-count" style="background:${d.cl};color:${d.c}">${d.outcomes.length}</span>`;
+  else  b.innerHTML = `All Domains <span class="fs-count">${DS.reduce((a,x)=>a+x.outcomes.length,0)}</span>`;
+  if(on){ b.style.background='#1A0A2E'; b.style.color='#fff'; b.style.borderColor='#1A0A2E'; }
+  b.onclick = ()=>setFilter(id, b, d);
+  return b;
+}
+function setFilter(id, btn, d){
+  document.querySelectorAll('.fs-btn').forEach(b=>{
+    b.classList.remove('on');
+    b.style.background=''; b.style.color=''; b.style.borderColor='';
+  });
+  btn.classList.add('on');
+  if(id==='all'){ btn.style.background='#1A0A2E'; btn.style.color='#fff'; btn.style.borderColor='#1A0A2E'; }
+  else          { btn.style.background=d.c; btn.style.color='#fff'; btn.style.borderColor=d.c; }
   document.querySelectorAll('.rm-item').forEach(el=>{
-    el.style.display=(id==='all'||el.dataset.domain===id)?'':'none';
+    el.style.display = (id==='all'||el.dataset.did===id) ? '' : 'none';
   });
 }
 
-/* ROADMAP */
+/* ── BUILD ROADMAP ── */
 function buildRoadmap(){
-  const wrap=document.getElementById('rmWrap');
-
+  const wrap = document.getElementById('roadmap');
   DS.forEach((d,di)=>{
-    const item=document.createElement('div');
-    item.className='rm-item';
-    item.dataset.domain=d.id;
+    const item = document.createElement('div');
+    item.className = 'rm-item';
+    item.dataset.did = d.id;
+    item.style.animationDelay = (0.08 + di*0.07)+'s';
 
-    item.innerHTML=`
-      <div class="rm-node" style="border-color:${d.c};color:${d.c}">${d.id}</div>
-      <div class="rm-card">
-        <div class="rm-card-hdr" onclick="toggleRm(this)">
-          <div>
-            <div class="rm-card-name">${d.name}</div>
-            <div class="rm-card-desc">${d.outcomes.length} outcomes</div>
-          </div>
-        </div>
-        <div class="rm-pills-row">
-          ${d.outcomes.map((o,i)=>`
-            <div class="rm-pill" style="border-color:${d.c};color:${d.c}" onclick="showDetail(event, this, '${d.c}', '${o.t}', '${o.skills.join('|')}')">
-              ${i+1}. ${o.t}
-            </div>
-          `).join('')}
-        </div>
-        <div class="rm-detail"></div>
+    // node
+    const node = document.createElement('div');
+    node.className = 'rm-node';
+    node.textContent = d.icon;
+    node.style.cssText = `background:${d.cl};color:${d.c};border-color:${d.c};box-shadow:0 0 0 5px var(--bg-top),0 2px 12px rgba(0,0,0,0.12);`;
+    node.onclick = ()=>toggleCard(d.id);
+
+    // card
+    const card = document.createElement('div');
+    card.className = 'rm-card';
+    card.id = 'card-'+d.id;
+
+    // stripe
+    const stripe = document.createElement('div');
+    stripe.className = 'rm-card-stripe';
+    stripe.style.background = d.cStripe;
+
+    // header
+    const hdr = document.createElement('div');
+    hdr.className = 'rm-card-hdr';
+    hdr.innerHTML = `
+      <div class="rm-card-icon" style="background:${d.cl};color:${d.c}">${d.icon}</div>
+      <div class="rm-card-info">
+        <div class="rm-card-name">${d.name}</div>
+        <div class="rm-card-desc">${d.desc}</div>
       </div>
-    `;
+      <div class="rm-card-right">
+        <span class="rm-code" style="color:${d.c};background:${d.cl};border-color:${d.cb}">${d.code}</span>
+        <span class="rm-ct">${d.outcomes.length} outcomes</span>
+        <div class="chev">
+          <svg width="11" height="11" viewBox="0 0 11 11" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="2,3.5 5.5,7 9,3.5"/>
+          </svg>
+        </div>
+      </div>`;
+    hdr.onclick = ()=>toggleCard(d.id);
 
+    // pills wrap
+    const pillsWrap = document.createElement('div');
+    pillsWrap.className = 'rm-pills-wrap';
+    pillsWrap.id = 'pw-'+d.id;
+
+    const pillsInner = document.createElement('div');
+    pillsInner.className = 'rm-pills-inner';
+
+    const pillsLbl = document.createElement('div');
+    pillsLbl.className = 'rm-pills-label';
+    pillsLbl.textContent = 'Outcomes — select one to expand';
+    pillsInner.appendChild(pillsLbl);
+
+    const pillsRow = document.createElement('div');
+    pillsRow.className = 'rm-pills-row';
+    pillsRow.id = 'pr-'+d.id;
+    pillsInner.appendChild(pillsRow);
+    pillsWrap.appendChild(pillsInner);
+
+    // detail panel
+    const detail = document.createElement('div');
+    detail.className = 'rm-detail';
+    detail.id = 'det-'+d.id;
+
+    card.appendChild(stripe);
+    card.appendChild(hdr);
+    card.appendChild(pillsWrap);
+    card.appendChild(detail);
+
+    item.appendChild(node);
+    item.appendChild(card);
     wrap.appendChild(item);
   });
 }
 
-function toggleRm(el){
-  const card=el.parentElement;
-  const pills=card.querySelector('.rm-pills-row');
-  pills.style.display = pills.style.display==='flex' ? 'none' : 'flex';
+function toggleCard(did){
+  const d      = DS.find(x=>x.id===did);
+  const card   = document.getElementById('card-'+did);
+  const pw     = document.getElementById('pw-'+did);
+  const isOpen = card.classList.contains('open');
+
+  if(isOpen){
+    card.classList.remove('open');
+    pw.style.maxHeight = '0';
+    // reset detail too
+    const det = document.getElementById('det-'+did);
+    det.style.maxHeight = '0';
+    selPill[did] = null;
+    // reset pill styles
+    document.querySelectorAll(`#pr-${did} .rm-pill`).forEach(p=>{
+      p.classList.remove('sel');
+      p.style.background = d.cl; p.style.color = d.c;
+    });
+    openCards[did] = false;
+  } else {
+    card.classList.add('open');
+
+    // build pills if not yet built
+    const pr = document.getElementById('pr-'+did);
+    if(!pr.children.length){
+      d.outcomes.forEach((o,oi)=>{
+        const pill = document.createElement('div');
+        pill.className = 'rm-pill';
+        pill.dataset.pid = `${did}-${oi}`;
+        pill.textContent = String(oi+1).padStart(2,'0')+' '+o.t;
+        pill.style.cssText = `color:${d.c};background:${d.cl};border-color:${d.cb};`;
+        pill.onclick = ()=>selectPill(did, oi);
+        pr.appendChild(pill);
+      });
+    }
+
+    // stagger reveal
+    const pills = pr.querySelectorAll('.rm-pill');
+    pills.forEach((p,i)=>{ p.classList.remove('revealed'); setTimeout(()=>p.classList.add('revealed'), 60+i*40); });
+
+    pw.style.maxHeight = '0';
+    requestAnimationFrame(()=>{
+      const inner = pw.querySelector('.rm-pills-inner');
+      pw.style.maxHeight = inner.scrollHeight + 'px';
+    });
+    openCards[did] = true;
+  }
 }
 
-function showDetail(e, el, color, title, skills){
-  e.stopPropagation();
+function selectPill(did, oi){
+  const d    = DS.find(x=>x.id===did);
+  const o    = d.outcomes[oi];
+  const det  = document.getElementById('det-'+did);
+  const pw   = document.getElementById('pw-'+did);
 
-  const pills = el.parentElement.querySelectorAll('.rm-pill');
-  pills.forEach(p=>p.classList.remove('sel'));
-  el.classList.add('sel');
-  el.style.background=color;
+  // deselect all pills
+  document.querySelectorAll(`#pr-${did} .rm-pill`).forEach(p=>{
+    p.classList.remove('sel');
+    p.style.background = d.cl; p.style.color = d.c;
+  });
 
-  const detail = el.closest('.rm-card').querySelector('.rm-detail');
+  // if same pill → close
+  if(selPill[did]===oi){
+    selPill[did]=null;
+    det.style.maxHeight='0';
+    return;
+  }
+  selPill[did]=oi;
 
-  detail.innerHTML=`
+  // highlight pill
+  const thisPill = document.querySelector(`[data-pid="${did}-${oi}"]`);
+  if(thisPill){ thisPill.classList.add('sel'); thisPill.style.background=d.c; thisPill.style.color='#fff'; }
+
+  // build detail content
+  const topicChips = o.tags.map(t=>
+    `<span class="topic-chip" style="color:${d.c};background:${d.cl};border-color:${d.cb}">${t}</span>`
+  ).join('');
+  const skillRows = o.skills.map(s=>
+    `<div class="skill-row"><span class="skill-bullet" style="background:${d.c}"></span>${s}</div>`
+  ).join('');
+
+  det.innerHTML = `
     <div class="rm-det-in">
-      <strong>${title}</strong>
-      <div style="margin-top:8px;">
-        ${skills.split('|').map(s=>`<span class="rm-sk">${s}</span>`).join('')}
+      <div class="rm-breadcrumb">
+        <span style="color:${d.c}">${d.code}</span>
+        <span class="rm-breadcrumb-sep">›</span>
+        <span>Outcome ${String(oi+1).padStart(2,'0')}</span>
       </div>
-    </div>
-  `;
+      <div class="rm-det-title" style="color:${d.c}">${o.t}</div>
+      <div class="rm-det-desc">${o.d}</div>
+      <div class="rm-det-cols">
+        <div>
+          <div class="rm-det-col-label">Topics covered</div>
+          <div class="topic-chips">${topicChips}</div>
+        </div>
+        <div>
+          <div class="rm-det-col-label">Specific skills</div>
+          <div class="skills-list">${skillRows}</div>
+        </div>
+      </div>
+    </div>`;
 
-  detail.style.maxHeight='200px';
+  // animate open
+  det.style.maxHeight = '0';
+  requestAnimationFrame(()=>{
+    det.style.maxHeight = det.scrollHeight + 40 + 'px';
+    // expand parent pills-wrap to accommodate
+    setTimeout(()=>{
+      const inner = document.querySelector(`#pw-${did} .rm-pills-inner`);
+      if(inner) pw.style.maxHeight = inner.scrollHeight + det.scrollHeight + 80 + 'px';
+    }, 50);
+  });
 }
 
-/* INIT */
+/* ── FOOTER ── */
+function buildFooter(){
+  const fc = document.getElementById('footCodes');
+  DS.forEach(d=>{
+    const s = document.createElement('span');
+    s.className = 'foot-code';
+    s.textContent = d.code;
+    s.style.cssText = `color:${d.c};background:${d.cl};border:1.5px solid ${d.cb}`;
+    fc.appendChild(s);
+  });
+}
+
 buildFilters();
 buildRoadmap();
-
+buildFooter();
 </script>
-
 </body>
 </html>
