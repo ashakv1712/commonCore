@@ -3,28 +3,35 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
-<title>Strive Math · Grade 7 Learning Dashboard</title>
+<title>Strive Math · Grade 7 Curriculum</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
 
 <style>
-:root{
+:root {
   --coral:#E8420A;
   --teal:#00C896;
+  --amber:#F5A623;
   --blue:#4A8FFF;
   --purple:#C44DFF;
+  --green:#22C55E;
 
   --bg:#07090F;
   --surface:#141820;
   --border:rgba(255,255,255,0.08);
+  --border2:rgba(255,255,255,0.12);
 
   --text1:#F0F4FF;
   --text2:#8FA4C8;
+  --text3:#4A6080;
+
+  --display:'Syne',sans-serif;
+  --font:'DM Sans',sans-serif;
 }
 
 body{
   margin:0;
-  font-family:'DM Sans',sans-serif;
+  font-family:var(--font);
   background:var(--bg);
   color:var(--text1);
 }
@@ -32,11 +39,11 @@ body{
 /* HERO */
 .hero{
   text-align:center;
-  padding:60px 20px;
+  padding:60px 20px 40px;
 }
 .hero h1{
-  font-family:'Syne';
-  font-size:56px;
+  font-family:var(--display);
+  font-size:64px;
 }
 .hero p{
   color:var(--text2);
@@ -45,95 +52,131 @@ body{
 /* TOOLBAR */
 .toolbar{
   display:flex;
-  justify-content:center;
-  gap:10px;
-  margin-bottom:30px;
+  justify-content:space-between;
+  align-items:center;
+  padding:16px 24px;
+  border-top:1px solid var(--border);
+  border-bottom:1px solid var(--border);
 }
-.btn{
-  padding:8px 16px;
-  border-radius:20px;
-  border:1px solid var(--border);
-  background:transparent;
-  color:var(--text2);
+
+.domain-pills{
+  display:flex;
+  gap:6px;
+  flex-wrap:wrap;
+}
+.dp{
+  font-size:11px;
+  padding:5px 12px;
+  border-radius:100px;
+  border:1px solid var(--border2);
+  color:var(--text3);
   cursor:pointer;
 }
-.btn.active{
-  background:var(--coral);
-  color:white;
+.dp.on{
+  background:white;
+  color:black;
+}
+
+/* ROADMAP */
+.roadmap{
+  max-width:900px;
+  margin:40px auto;
+  position:relative;
+  padding-left:60px;
+}
+
+.rm-spine{
+  position:absolute;
+  left:20px;
+  top:0;
+  bottom:0;
+  width:2px;
+  background:linear-gradient(var(--coral),var(--teal),var(--blue),var(--purple));
+  opacity:0.3;
+}
+
+.rm-item{
+  position:relative;
+  margin-bottom:16px;
+}
+
+.rm-node{
+  position:absolute;
+  left:-52px;
+  top:18px;
+  width:32px;
+  height:32px;
+  border-radius:50%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-weight:800;
+  border:2px solid;
+  background:var(--bg);
 }
 
 /* CARD */
-.card{
-  max-width:900px;
-  margin:0 auto 16px;
+.rm-card{
   background:var(--surface);
   border:1px solid var(--border);
   border-radius:16px;
   overflow:hidden;
-  transition:.2s;
-}
-.card:hover{
-  transform:translateY(-2px);
 }
 
-.card-header{
-  padding:20px;
+.rm-card-hdr{
+  padding:16px 20px;
+  display:flex;
+  justify-content:space-between;
   cursor:pointer;
 }
 
-.domain-title{
-  font-family:'Syne';
-  font-size:20px;
+.rm-card-name{
+  font-family:var(--display);
+  font-weight:700;
 }
 
-.big-idea{
-  font-size:13px;
-  color:var(--text2);
-  margin-top:4px;
+.rm-card-desc{
+  font-size:12px;
+  color:var(--text3);
 }
 
-/* OUTCOMES */
-.outcome{
-  border-top:1px solid var(--border);
-  padding:14px 20px;
-}
-
-.progress-bar{
-  height:4px;
-  background:#222;
-  border-radius:3px;
-  margin-top:6px;
-}
-.progress-fill{
-  height:100%;
-  background:linear-gradient(90deg,var(--teal),var(--blue));
-}
-
-/* TAGS */
-.tags{
-  margin-top:8px;
-  display:flex;
+.rm-pills-row{
+  display:none;
+  padding:10px 20px;
   flex-wrap:wrap;
   gap:6px;
 }
-.tag{
+
+.rm-pill{
   font-size:11px;
   padding:4px 10px;
-  border-radius:20px;
+  border-radius:100px;
+  border:1px solid;
+  cursor:pointer;
+}
+
+.rm-pill.sel{
+  color:white;
+}
+
+.rm-detail{
+  max-height:0;
+  overflow:hidden;
+  transition:0.3s;
+}
+
+.rm-det-in{
+  padding:14px 20px;
+  border-top:1px solid var(--border);
+}
+
+.rm-sk{
+  font-size:11px;
   background:#111;
-}
-
-/* REAL WORLD */
-.real{
-  font-size:12px;
-  margin-top:8px;
-  color:var(--text2);
-}
-
-/* COMPACT MODE */
-.compact .tags,
-.compact .real{
-  display:none;
+  padding:4px 8px;
+  border-radius:6px;
+  margin:2px;
+  display:inline-block;
 }
 </style>
 </head>
@@ -141,98 +184,137 @@ body{
 <body>
 
 <div class="hero">
-  <h1>Grade 7 Learning</h1>
-  <p>Track progress across Common Core math domains</p>
+  <h1>Grade 7</h1>
+  <p>Learning Roadmap · Common Core</p>
 </div>
 
 <div class="toolbar">
-  <button class="btn active" onclick="toggleCompact(false)">Full View</button>
-  <button class="btn" onclick="toggleCompact(true)">Compact</button>
+  <div>Explore learning progression</div>
+  <div class="domain-pills" id="dpRow"></div>
 </div>
 
-<div id="app"></div>
+<div class="roadmap" id="rmWrap">
+  <div class="rm-spine"></div>
+</div>
 
 <script>
-
-/* LEARNING SKILLS */
-const SKILLS = ['Problem Solving','Reasoning','Communication','Connections','Precision'];
 
 /* DATA */
 const DS = [
 {
-name:'Ratios & Proportions',
-big:'Understand relationships between quantities and scaling',
+id:'RP',name:'Ratios & Proportions',c:'#E8420A',
 outcomes:[
-{
-t:'Compute unit rates',
-progress:0.7,
-skills:['Problem Solving','Precision'],
-example:'Compare mobile data plans',
-tags:['Unit rate','Fractions']
-},
-{
-t:'Solve percent problems',
-progress:0.5,
-skills:['Problem Solving'],
-example:'Calculate discounts in shopping',
-tags:['Percent','Tax']
-}
+{t:'Unit rates',skills:['Find unit rate','Compare rates']},
+{t:'Percent problems',skills:['Discount','Tax','Interest']}
 ]
 },
 {
-name:'Expressions & Equations',
-big:'Use algebra to represent real-world relationships',
+id:'NS',name:'Number System',c:'#00C896',
 outcomes:[
+{t:'Add/subtract integers',skills:['Rules','Number line']},
+{t:'Multiply/divide',skills:['Sign rules']}
+]
+},
 {
-t:'Solve linear equations',
-progress:0.8,
-skills:['Reasoning'],
-example:'Solve unknown price problems',
-tags:['Equations']
-}
+id:'EE',name:'Expressions & Equations',c:'#F5A623',
+outcomes:[
+{t:'Solve equations',skills:['Two-step','Word problems']}
 ]
 }
 ];
 
-/* BUILD UI */
-const app=document.getElementById('app');
+/* FILTERS */
+function buildFilters(){
+  const row=document.getElementById('dpRow');
 
-DS.forEach(d=>{
-  const card=document.createElement('div');
-  card.className='card';
+  const all=document.createElement('div');
+  all.className='dp on';
+  all.innerText='All';
+  all.onclick=()=>setFilter('all');
+  row.appendChild(all);
 
-  const header=document.createElement('div');
-  header.className='card-header';
-  header.innerHTML=`
-    <div class="domain-title">${d.name}</div>
-    <div class="big-idea">${d.big}</div>
-  `;
-  card.appendChild(header);
-
-  d.outcomes.forEach(o=>{
-    const oc=document.createElement('div');
-    oc.className='outcome';
-
-    oc.innerHTML=`
-      <div>${o.t}</div>
-      <div class="progress-bar">
-        <div class="progress-fill" style="width:${o.progress*100}%"></div>
-      </div>
-      <div class="tags">
-        ${o.tags.map(t=>`<span class="tag">${t}</span>`).join('')}
-      </div>
-      <div class="real">💡 ${o.example}</div>
-    `;
-    card.appendChild(oc);
+  DS.forEach(d=>{
+    const b=document.createElement('div');
+    b.className='dp';
+    b.innerText=d.id;
+    b.onclick=()=>setFilter(d.id);
+    row.appendChild(b);
   });
-
-  app.appendChild(card);
-});
-
-/* COMPACT TOGGLE */
-function toggleCompact(on){
-  document.body.classList.toggle('compact',on);
 }
+
+function setFilter(id){
+  document.querySelectorAll('.dp').forEach(b=>b.classList.remove('on'));
+  event.target.classList.add('on');
+
+  document.querySelectorAll('.rm-item').forEach(el=>{
+    el.style.display=(id==='all'||el.dataset.domain===id)?'':'none';
+  });
+}
+
+/* ROADMAP */
+function buildRoadmap(){
+  const wrap=document.getElementById('rmWrap');
+
+  DS.forEach((d,di)=>{
+    const item=document.createElement('div');
+    item.className='rm-item';
+    item.dataset.domain=d.id;
+
+    item.innerHTML=`
+      <div class="rm-node" style="border-color:${d.c};color:${d.c}">${d.id}</div>
+      <div class="rm-card">
+        <div class="rm-card-hdr" onclick="toggleRm(this)">
+          <div>
+            <div class="rm-card-name">${d.name}</div>
+            <div class="rm-card-desc">${d.outcomes.length} outcomes</div>
+          </div>
+        </div>
+        <div class="rm-pills-row">
+          ${d.outcomes.map((o,i)=>`
+            <div class="rm-pill" style="border-color:${d.c};color:${d.c}" onclick="showDetail(event, this, '${d.c}', '${o.t}', '${o.skills.join('|')}')">
+              ${i+1}. ${o.t}
+            </div>
+          `).join('')}
+        </div>
+        <div class="rm-detail"></div>
+      </div>
+    `;
+
+    wrap.appendChild(item);
+  });
+}
+
+function toggleRm(el){
+  const card=el.parentElement;
+  const pills=card.querySelector('.rm-pills-row');
+  pills.style.display = pills.style.display==='flex' ? 'none' : 'flex';
+}
+
+function showDetail(e, el, color, title, skills){
+  e.stopPropagation();
+
+  const pills = el.parentElement.querySelectorAll('.rm-pill');
+  pills.forEach(p=>p.classList.remove('sel'));
+  el.classList.add('sel');
+  el.style.background=color;
+
+  const detail = el.closest('.rm-card').querySelector('.rm-detail');
+
+  detail.innerHTML=`
+    <div class="rm-det-in">
+      <strong>${title}</strong>
+      <div style="margin-top:8px;">
+        ${skills.split('|').map(s=>`<span class="rm-sk">${s}</span>`).join('')}
+      </div>
+    </div>
+  `;
+
+  detail.style.maxHeight='200px';
+}
+
+/* INIT */
+buildFilters();
+buildRoadmap();
 
 </script>
 
