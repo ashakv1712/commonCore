@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Strive Math · Grade 7 Learning Dashboard</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+
+<style>
+:root{
+  --coral:#E8420A;
+  --teal:#00C896;
+  --blue:#4A8FFF;
+  --purple:#C44DFF;
+
+  --bg:#07090F;
+  --surface:#141820;
+  --border:rgba(255,255,255,0.08);
+
+  --text1:#F0F4FF;
+  --text2:#8FA4C8;
+}
+
+body{
+  margin:0;
+  font-family:'DM Sans',sans-serif;
+  background:var(--bg);
+  color:var(--text1);
+}
+
+/* HERO */
+.hero{
+  text-align:center;
+  padding:60px 20px;
+}
+.hero h1{
+  font-family:'Syne';
+  font-size:56px;
+}
+.hero p{
+  color:var(--text2);
+}
+
+/* TOOLBAR */
+.toolbar{
+  display:flex;
+  justify-content:center;
+  gap:10px;
+  margin-bottom:30px;
+}
+.btn{
+  padding:8px 16px;
+  border-radius:20px;
+  border:1px solid var(--border);
+  background:transparent;
+  color:var(--text2);
+  cursor:pointer;
+}
+.btn.active{
+  background:var(--coral);
+  color:white;
+}
+
+/* CARD */
+.card{
+  max-width:900px;
+  margin:0 auto 16px;
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:16px;
+  overflow:hidden;
+  transition:.2s;
+}
+.card:hover{
+  transform:translateY(-2px);
+}
+
+.card-header{
+  padding:20px;
+  cursor:pointer;
+}
+
+.domain-title{
+  font-family:'Syne';
+  font-size:20px;
+}
+
+.big-idea{
+  font-size:13px;
+  color:var(--text2);
+  margin-top:4px;
+}
+
+/* OUTCOMES */
+.outcome{
+  border-top:1px solid var(--border);
+  padding:14px 20px;
+}
+
+.progress-bar{
+  height:4px;
+  background:#222;
+  border-radius:3px;
+  margin-top:6px;
+}
+.progress-fill{
+  height:100%;
+  background:linear-gradient(90deg,var(--teal),var(--blue));
+}
+
+/* TAGS */
+.tags{
+  margin-top:8px;
+  display:flex;
+  flex-wrap:wrap;
+  gap:6px;
+}
+.tag{
+  font-size:11px;
+  padding:4px 10px;
+  border-radius:20px;
+  background:#111;
+}
+
+/* REAL WORLD */
+.real{
+  font-size:12px;
+  margin-top:8px;
+  color:var(--text2);
+}
+
+/* COMPACT MODE */
+.compact .tags,
+.compact .real{
+  display:none;
+}
+</style>
+</head>
+
+<body>
+
+<div class="hero">
+  <h1>Grade 7 Learning</h1>
+  <p>Track progress across Common Core math domains</p>
+</div>
+
+<div class="toolbar">
+  <button class="btn active" onclick="toggleCompact(false)">Full View</button>
+  <button class="btn" onclick="toggleCompact(true)">Compact</button>
+</div>
+
+<div id="app"></div>
+
+<script>
+
+/* LEARNING SKILLS */
+const SKILLS = ['Problem Solving','Reasoning','Communication','Connections','Precision'];
+
+/* DATA */
+const DS = [
+{
+name:'Ratios & Proportions',
+big:'Understand relationships between quantities and scaling',
+outcomes:[
+{
+t:'Compute unit rates',
+progress:0.7,
+skills:['Problem Solving','Precision'],
+example:'Compare mobile data plans',
+tags:['Unit rate','Fractions']
+},
+{
+t:'Solve percent problems',
+progress:0.5,
+skills:['Problem Solving'],
+example:'Calculate discounts in shopping',
+tags:['Percent','Tax']
+}
+]
+},
+{
+name:'Expressions & Equations',
+big:'Use algebra to represent real-world relationships',
+outcomes:[
+{
+t:'Solve linear equations',
+progress:0.8,
+skills:['Reasoning'],
+example:'Solve unknown price problems',
+tags:['Equations']
+}
+]
+}
+];
+
+/* BUILD UI */
+const app=document.getElementById('app');
+
+DS.forEach(d=>{
+  const card=document.createElement('div');
+  card.className='card';
+
+  const header=document.createElement('div');
+  header.className='card-header';
+  header.innerHTML=`
+    <div class="domain-title">${d.name}</div>
+    <div class="big-idea">${d.big}</div>
+  `;
+  card.appendChild(header);
+
+  d.outcomes.forEach(o=>{
+    const oc=document.createElement('div');
+    oc.className='outcome';
+
+    oc.innerHTML=`
+      <div>${o.t}</div>
+      <div class="progress-bar">
+        <div class="progress-fill" style="width:${o.progress*100}%"></div>
+      </div>
+      <div class="tags">
+        ${o.tags.map(t=>`<span class="tag">${t}</span>`).join('')}
+      </div>
+      <div class="real">💡 ${o.example}</div>
+    `;
+    card.appendChild(oc);
+  });
+
+  app.appendChild(card);
+});
+
+/* COMPACT TOGGLE */
+function toggleCompact(on){
+  document.body.classList.toggle('compact',on);
+}
+
+</script>
+
+</body>
+</html>
